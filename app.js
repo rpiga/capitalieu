@@ -305,20 +305,44 @@ function randomIntFromInterval(min, max) { // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
+function determinaArticolo(item) {
+    eccezioniArray = ['Andorra', 'Monaco', 'San Marino', 'Cipro', 'Citta del Vaticano']
+    if (eccezioniArray.indexOf(item) !== -1) {
+        return "di"
+    } 
+    
+    _return = "del"
+
+    vocaliArray = ["A", "E", "I", "O", "U"]
+
+    switch(item.slice(-1)) {
+        case "a": _return = "della"
+            if ( vocaliArray.indexOf(item[0]) !== -1 ) {
+                _return = "dell'"
+            }
+            break;
+        case "i": _return = "dei"
+            break;
+    }
+
+    return _return
+}
+
 function testType(item) {
-    const randomType = randomIntFromInterval(0,2)
+    const randomType = 0 //randomIntFromInterval(0,2)
     switch(randomType) {
         case 0:
+            articolo = determinaArticolo(item['name'])
             return {
                 type: 0,
-                question: "Qual è la capitale di " + item['name'] + " <img src='./assets/" + item['flag'] + "' style='border:1px solid #ccc' /> ?",
+                question: `Qual è la capitale ${articolo} <span style='font-weight: bold;'>${item['name']}</span> <img src='./assets/${item['flag']}' style='border:1px solid #ccc' /> ?`,
                 answer: item['capital']
                 }
             break;
         case 1:
             return {
                 type: 1,
-                question: "Quale Stato ha come capitale " + item['capital'] + "?",
+                question: `Quale Stato ha come capitale ${item['capital']}?`,
                 answer: item['name']
                 }
             break;
@@ -331,8 +355,15 @@ function testType(item) {
 }
 
 
+function gameMode0(item) {
+    card.setAttribute('src', './assets/' + item['map'])
+    questionArea.innerHTML = `Qual è la capitale ${articolo} <span style='font-weight: bold;'>${item['name']}</span> <img src='./assets/${item['flag']}' style='border:1px solid #ccc' /> ?`
+
+    feedbackArea.createElement('button')
+}
+
 for (const element of countryArray) {
-    console.log(element)
+    console.log(determinaArticolo(element['name']) + " " + element['name'])
     totals++
     updateScore()
 
@@ -341,8 +372,8 @@ for (const element of countryArray) {
     }
     const card = document.createElement('img')
 //    card.setAttribute('src', './assets/' + element['map'])
-    card.style['width'] = '50%'
-    card.style['height'] = '50%'
+    card.style['width'] = '100%'
+//    card.style['height'] = '50%'
 
     mapArea.appendChild(card)
     questionTemplate = testType(element)

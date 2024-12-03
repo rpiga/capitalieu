@@ -1,0 +1,15 @@
+#wrapper {
+    display: flex;
+  }
+  
+  #left {
+    flex: 0 0 50%;
+  }
+  
+  #right {
+    flex: 1;
+  }
+
+  #questionArea {
+    font-size: 1.8em;
+  }
