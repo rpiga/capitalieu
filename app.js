@@ -286,7 +286,7 @@ const countryArray = [
 
 countryArray.sort(() => 0.5 - Math.random())
 
-//console.log(countryArray)
+console.log(countryArray)
 
 const gridDisplay = document.querySelector('#grid')
 const mapArea = document.querySelector('#mapArea')
@@ -340,12 +340,25 @@ for (const element of countryArray) {
         mapArea.removeChild(mapArea.firstChild)
     }
     const card = document.createElement('img')
-    card.setAttribute('src', './assets/' + element['map'])
+//    card.setAttribute('src', './assets/' + element['map'])
     card.style['width'] = '50%'
     card.style['height'] = '50%'
 
     mapArea.appendChild(card)
     questionTemplate = testType(element)
 
-    questionArea.innerHTML = questionTemplate['question']
+    switch(questionTemplate['type'])
+    {
+        case 0:
+            card.setAttribute('src', './assets/' + element['map'])
+            questionArea.innerHTML = questionTemplate['question']
+        break;
+        case 1:
+            card.setAttribute('src', './assets/EU_Europa hp.png')
+            questionArea.innerHTML = questionTemplate['question']
+        break;
+        case 2:
+            card.setAttribute('src', './assets/' + element['map'])
+        break;
+    }
 }
