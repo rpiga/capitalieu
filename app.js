@@ -286,8 +286,6 @@ const countryArray = [
 
 countryArray.sort(() => 0.5 - Math.random())
 
-console.log(countryArray)
-
 const gridDisplay = document.querySelector('#grid')
 const mapArea = document.querySelector('#mapArea')
 const scoreDisplay = document.querySelector('#result')
@@ -295,17 +293,19 @@ const scoreDisplay = document.querySelector('#result')
 points = 0
 totals = 0
 
-// inizializza Score
-
 function updateScore() {
+    // inizializza Score
     scoreDisplay.innerHTML = points + ' / ' + totals
 }
 
-function randomIntFromInterval(min, max) { // min and max included 
-    return Math.floor(Math.random() * (max - min + 1) + min);
+function rndInt(min, max) {
+    // restituisce numero casuale intero, compreso fra due limiti
+    return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
 function determinaArticolo(item) {
+    // determina l'articolo da usare per la nazione
+    // limitato alla lista degli stati EU
     eccezioniArray = ['Andorra', 'Monaco', 'San Marino', 'Cipro', 'Citta del Vaticano']
     if (eccezioniArray.indexOf(item) !== -1) {
         return "di"
@@ -328,68 +328,131 @@ function determinaArticolo(item) {
     return _return
 }
 
-function testType(item) {
-    const randomType = 0 //randomIntFromInterval(0,2)
-    switch(randomType) {
-        case 0:
-            articolo = determinaArticolo(item['name'])
-            return {
-                type: 0,
-                question: `Qual è la capitale ${articolo} <span style='font-weight: bold;'>${item['name']}</span> <img src='./assets/${item['flag']}' style='border:1px solid #ccc' /> ?`,
-                answer: item['capital']
-                }
-            break;
-        case 1:
-            return {
-                type: 1,
-                question: `Quale Stato ha come capitale ${item['capital']}?`,
-                answer: item['name']
-                }
-            break;
-        case 2:
-            return {
-                type: 2,
-            }
-            break;
-    }
+// inizializza score
+points = 0
+totals = 0
+updateScore()
+
+function runGame1(element) {
+    //document.getElementsByClassName("card-game").setAttribute("display", "hide")
+    const _card = document.getElementById("card-game-1")
+    const item = element
+    _card.style.display = 'block'
+    feedbackArea.style.display = 'none'
+
+    questionArea.innerHTML = `Qual è la capitale ${determinaArticolo(item['name'])} <span style='font-weight: bold;'>${item['name']}</span> <img src='./assets/${item['flag']}' style='border:1px solid #ccc' /> ?`
+    inputArea.innerHTML = "Clicca qui per la risposta"
+    feedbackArea.innerHTML = item['capital']
 }
 
+// function runGame2(element) {
+//     document.getElementsByClassName("card-game").setAttribute("display", "hide")
+//     const _card = document.getElementById("card-game-2")
+//     _card.setAttribute("display", "show")
+// }
 
-function gameMode0(item) {
-    card.setAttribute('src', './assets/' + item['map'])
-    questionArea.innerHTML = `Qual è la capitale ${articolo} <span style='font-weight: bold;'>${item['name']}</span> <img src='./assets/${item['flag']}' style='border:1px solid #ccc' /> ?`
-
-    feedbackArea.createElement('button')
-}
-
-for (const element of countryArray) {
-    console.log(determinaArticolo(element['name']) + " " + element['name'])
-    totals++
-    updateScore()
-
+function showMap(item) {
     if(mapArea.firstChild){
         mapArea.removeChild(mapArea.firstChild)
     }
-    const card = document.createElement('img')
-//    card.setAttribute('src', './assets/' + element['map'])
-    card.style['width'] = '100%'
-//    card.style['height'] = '50%'
+    const cardMap = document.createElement('img')
+    cardMap.setAttribute('src', `./assets/${item}`)
 
-    mapArea.appendChild(card)
-    questionTemplate = testType(element)
-
-    switch(questionTemplate['type'])
-    {
-        case 0:
-            card.setAttribute('src', './assets/' + element['map'])
-            questionArea.innerHTML = questionTemplate['question']
-        break;
-        case 1:
-            card.setAttribute('src', './assets/EU_Europa hp.png')
-            questionArea.innerHTML = questionTemplate['question']
-        break;
-        case 2:
-            card.setAttribute('src', './assets/' + element['map'])
-        break;
-    }
+    mapArea.appendChild(cardMap)
 }
+
+
+// inizia ciclo schede
+//for (let index = 0; index < countryArray.length; index++) {
+_continue = true
+
+while(_continue == true) {
+    element = countryArray.pop();
+    
+    // mostra mappa
+    showMap(element['map'])
+
+    // sceglie game
+    const game = 1 //rndInt(1,2)
+
+    if (game === 1) {
+        _continue = false
+        console.log("ok")
+        runGame1(element)
+    } else {
+        _continue = false
+        runGame2(element)
+    }
+
+
+    if (countryArray.length <=0) break;
+}
+
+
+
+
+// function testType(item) {
+//     const randomType = 0 //randomIntFromInterval(0,2)
+//     switch(randomType) {
+//         case 0:
+//             articolo = determinaArticolo(item['name'])
+//             return {
+//                 type: 0,
+//                 question: `Qual è la capitale ${articolo} <span style='font-weight: bold;'>${item['name']}</span> <img src='./assets/${item['flag']}' style='border:1px solid #ccc' /> ?`,
+//                 answer: item['capital']
+//                 }
+//             break;
+//         case 1:
+//             return {
+//                 type: 1,
+//                 question: `Quale Stato ha come capitale ${item['capital']}?`,
+//                 answer: item['name']
+//                 }
+//             break;
+//         case 2:
+//             return {
+//                 type: 2,
+//             }
+//             break;
+//     }
+// }
+
+
+// function gameMode0(item) {
+//     card.setAttribute('src', './assets/' + item['map'])
+//     questionArea.innerHTML = `Qual è la capitale ${articolo} <span style='font-weight: bold;'>${item['name']}</span> <img src='./assets/${item['flag']}' style='border:1px solid #ccc' /> ?`
+
+//     feedbackArea.createElement('button')
+// }
+
+// for (const element of countryArray) {
+//     // console.log(determinaArticolo(element['name']) + " " + element['name'])
+//     totals++
+//     updateScore()
+
+//     if(mapArea.firstChild){
+//         mapArea.removeChild(mapArea.firstChild)
+//     }
+//     const card = document.createElement('img')
+// //    card.setAttribute('src', './assets/' + element['map'])
+//     card.style['width'] = '100%'
+// //    card.style['height'] = '50%'
+
+//     mapArea.appendChild(card)
+//     questionTemplate = testType(element)
+
+//     switch(questionTemplate['type'])
+//     {
+//         case 0:
+//             card.setAttribute('src', './assets/' + element['map'])
+//             questionArea.innerHTML = questionTemplate['question']
+//         break;
+//         case 1:
+//             card.setAttribute('src', './assets/EU_Europa hp.png')
+//             questionArea.innerHTML = questionTemplate['question']
+//         break;
+//         case 2:
+//             card.setAttribute('src', './assets/' + element['map'])
+//         break;
+//     }
+// }

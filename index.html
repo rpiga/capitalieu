@@ -6,6 +6,7 @@
     <title>Capitali d'Europa</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
 </head>
 <body>
     
@@ -17,9 +18,21 @@
         </div>
 
         <div id="right">
-            <div id="questionArea">one</div>
-            <div id="inputArea">two</div>
-            <div id="feedbackArea">three</div>
+            <div id="card-game-1" class="card-game" style="border: 1px solid;">
+                <div id="questionArea">one</div>
+                <div id="inputArea" class="action">two</div>
+                <div id="feedbackArea">three</div>
+            </div>
+            <div id="card-game-2" class="card-game" style="border: 1px solid;">
+                <div id="questionArea">one</div>
+                <div id="inputArea">
+                    <input id="btn-choice-1" type="button" />
+                    <input id="btn-choice-2" type="button" />
+                    <input id="btn-choice-3" type="button" />
+                    <input id="btn-choice-4" type="button" />
+                </div>
+                <div id="feedbackArea">three</div>
+            </div>
         </div>
 
     </div>
